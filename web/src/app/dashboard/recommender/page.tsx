@@ -6,6 +6,7 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import AddMealModal from "../../../components/ui/AddMealModal";
 import { supabase } from "../../../lib/supabaseClient";
+import { cn } from "@/lib/utils";
 
 interface Recipe {
   id: number;
@@ -38,6 +39,8 @@ export default function RecommendPage() {
 
     setLoading(true);
     setRecipes([]);
+    setExpandedGoal(""); // Clear previous results
+
     try {
       const res = await fetch("/api/recommender", {
         method: "POST",
