@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { createClient } from "@/utils/supabase/client";
 import { Loader2, Plus, ShoppingBasket, Trash2, TrendingUp, Calendar, Package } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 interface PantryItem {
     id: number;
@@ -35,7 +35,9 @@ export default function PantryPage() {
     const [newItemQuantity, setNewItemQuantity] = useState("");
     const [adding, setAdding] = useState(false);
     const { toast } = useToast();
-    const supabase = createClient();
+
+    // Memoize supabase client to prevent recreation on every render
+    const supabase = useMemo(() => createClient(), []);
 
     // Calculate statistics
     const totalItems = items.length;
@@ -50,7 +52,11 @@ export default function PantryPage() {
         const {
             data: { user },
         } = await supabase.auth.getUser();
-        if (!user) return;
+
+        if (!user) {
+            setLoading(false); // Fix: Set loading to false when no user
+            return;
+        }
 
         console.log("Fetching pantry items for auth user:", user.id);
 
@@ -103,7 +109,7 @@ export default function PantryPage() {
 
     useEffect(() => {
         fetchItems();
-    }, [supabase]);
+    }, []); // Empty dependency array - only run once on mount
 
     const handleAddItem = async (e: React.FormEvent) => {
         e.preventDefault();

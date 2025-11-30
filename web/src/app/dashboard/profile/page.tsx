@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { createClient } from "@/utils/supabase/client";
 import { CheckCircle2, Loader2, Save, UserCircle, Utensils, AlertTriangle, ChefHat, Info } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 
 const COMMON_ALLERGIES = ["No Allergy", "Peanuts", "Tree Nuts", "Shellfish", "Dairy", "Eggs", "Soy", "Wheat/Gluten", "Fish"];
 const DIETARY_PREFERENCES = ["Vegetarian", "Vegan", "Keto", "Paleo", "Low-Carb", "Mediterranean", "Gluten-Free", "Dairy-Free"];
@@ -23,7 +23,9 @@ export default function ProfilePage() {
     const [kitchenEquipment, setKitchenEquipment] = useState<string[]>([]);
     const [goals, setGoals] = useState("");
     const { toast } = useToast();
-    const supabase = createClient();
+
+    // Memoize supabase client to prevent recreation on every render
+    const supabase = useMemo(() => createClient(), []);
 
     // Calculate profile completeness (7 sections, ~14% each)
     const completeness = Math.round(
@@ -68,7 +70,7 @@ export default function ProfilePage() {
         };
 
         fetchProfile();
-    }, [supabase]);
+    }, []); // Empty dependency array - only run once on mount
 
     const toggleItem = (item: string, list: string[], setList: (list: string[]) => void) => {
         if (list.includes(item)) {
