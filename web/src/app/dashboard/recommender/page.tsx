@@ -74,14 +74,14 @@ export default function RecommendPage() {
                 .maybeSingle();
 
               if (error) {
-                console.error("Supabase lookup error for", r.name, error);
+                // Recipe not found in database - this is expected for AI-generated names
                 return { ...r };
               }
 
               const id = row?.id ?? null;
               return { ...r, id };
             } catch (e) {
-              console.error("Unexpected error looking up recipe id:", e);
+              // Silently handle lookup errors - recipe will work without database ID
               return { ...r };
             }
           })

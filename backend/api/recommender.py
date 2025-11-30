@@ -1,5 +1,5 @@
 """
-recommender.py — Lazy-load + Render-safe version
+recommender.py - Lazy-load + Render-safe version
 """
 
 import os

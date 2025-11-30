@@ -2,7 +2,6 @@
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
-import { ChevronLeft, ChevronRight, Filter } from "lucide-react";
 
 type FilterItem = { id: number; name: string };
 
