@@ -73,14 +73,14 @@ export default function ShoppingListPage() {
                     <div>
                         <h1 className="text-3xl font-bold text-neutral-100">Smart Shopping List</h1>
                         <p className="text-neutral-400 text-sm mt-1">
-                            Based on your {data?.meta.planned_meals_count} upcoming meals
+                            Based on your {data?.meta?.planned_meals_count || 0} upcoming meals
                         </p>
                     </div>
                 </div>
             </div>
 
             {/* Empty State */}
-            {data?.missing_items.length === 0 ? (
+            {(data?.missing_items?.length || 0) === 0 ? (
                 <div className="rounded-xl border border-neutral-800 bg-neutral-900/50 p-12 text-center">
                     <div className="mx-auto w-16 h-16 bg-neutral-800 rounded-full flex items-center justify-center mb-4">
                         <Check className="h-8 w-8 text-emerald-500" />
@@ -93,7 +93,7 @@ export default function ShoppingListPage() {
             ) : (
                 /* List */
                 <div className="grid gap-4">
-                    {data?.missing_items.map((item, idx) => (
+                    {(data?.missing_items || []).map((item, idx) => (
                         <div
                             key={idx}
                             className="group flex flex-col md:flex-row md:items-center justify-between gap-4 rounded-xl border border-neutral-800 bg-neutral-900 p-4 transition-all hover:border-emerald-500/50 hover:bg-neutral-800/50"

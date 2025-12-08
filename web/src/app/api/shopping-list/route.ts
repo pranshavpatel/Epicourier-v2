@@ -68,7 +68,14 @@ export async function GET() {
         const recipeIds = Array.from(new Set(events?.map(e => e.recipe_id).filter(Boolean)));
 
         if (recipeIds.length === 0) {
-            return NextResponse.json({ missing_items: [], message: "No meals planned for the week." });
+            return NextResponse.json({
+                missing_items: [],
+                message: "No meals planned for the week.",
+                meta: {
+                    planned_meals_count: events?.length || 0,
+                    date_range: { start: todayStr, end: nextWeekStr }
+                }
+            });
         }
 
         // 4. Fetch Ingredients for Recipes
